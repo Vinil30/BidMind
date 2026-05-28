@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" type="image/svg+xml" href="{{ url_for('brand_asset') }}?v=2">
+  <title>PitchAura - AI-Driven Proposal & Pitch Management</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="static/css/style.css">
+
+</head>
+<body> 
+  <header>
+    <div class="logo">
+      <img src="{{ url_for('brand_logo') }}" alt="" width="28" height="28" style="width:28px;height:28px;border-radius:6px;object-fit:cover;display:block;">
+      <div>PitchAura</div>
+    </div>
+    <div>
+      <a href="/login" class="login-btn">Login</a>
+
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>AI-Driven Proposal & Pitch Management Platform</h1>
+      <p>Connect businesses, entrepreneurs, and investors through intelligent proposal matching and automated evaluation</p>
+      <a class="cta" href="#overview">Get Started</a>
+    </section>
+
+    <section id="overview" class="section">
+      <h3>Platform Overview</h3>
+      <div class="overview">
+        <div class="card">
+          <div class="icon">🏢</div>
+          <h4>For Businesses</h4>
+          <p>Filter incoming proposals for staffing, services, partnerships, and investment opportunities with AI-powered evaluation</p>
+        </div>
+        <div class="card">
+          <div class="icon">💡</div>
+          <h4>For Entrepreneurs</h4>
+          <p>Submit pitches that get intelligently matched with relevant investors based on market potential and criteria</p>
+        </div>
+        <div class="card">
+          <div class="icon">💼</div>
+          <h4>For Investors</h4>
+          <p>Specify investment preferences and receive summaries of the most relevant opportunities for quick decision-making</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:28px">Platform Capabilities</h3>
+      <div class="capabilities">
+        <div class="cap-grid">
+          <div class="small-card"><h5>AI-Powered Filtering</h5><p>Automatically evaluate and filter proposals based on custom criteria and preferences.</p></div>
+          <div class="small-card"><h5>Shareable Links</h5><p>Generate proposal request links to share on LinkedIn, X, or email for streamlined intake.</p></div>
+          <div class="small-card"><h5>Automated Summaries</h5><p>Generate concise summaries of proposals and pitches for quick review and decision-making.</p></div>
+
+          <div class="small-card"><h5>Smart Matching</h5><p>Connect entrepreneurs with relevant investors based on preferences and opportunity alignment.</p></div>
+          <div class="small-card"><h5>Customizable Thresholds</h5><p>Set filtering levels to control which proposals reach your attention based on relevance.</p></div>
+          <div class="small-card"><h5>Automated Responses</h5><p>Send polite responses and feedback automatically to proposals that don't meet criteria.</p></div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:28px">How It Works</h3>
+      <div class="how">
+        <div class="steps">
+          <div class="step">
+            <div class="num">1</div>
+            <div>
+              <h6>Define Your Preferences</h6>
+              <p>Set criteria for the types of proposals, partnerships, or investment opportunities you're interested in.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">2</div>
+            <div>
+              <h6>AI Evaluation</h6>
+              <p>Our AI system evaluates incoming proposals and pitches against your specified criteria.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">3</div>
+            <div>
+              <h6>Smart Matching</h6>
+              <p>Relevant proposals are matched and summarized, while irrelevant ones receive automated feedback.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="num">4</div>
+            <div>
+              <h6>Review & Decision</h6>
+              <p>Review summaries and mark opportunities as "Yes", "Maybe", or "No" for efficient decision-making.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 style="margin-top:28px">Analytics & Insights</h3>
+      <div class="analytics">
+        <div class="muted-card"><h5>Trend Tracking</h5><p>Monitor proposal trends and identify patterns in what types of opportunities are performing best.</p></div>
+        <div class="muted-card"><h5>Criteria Refinement</h5><p>Understand why proposals are rejected and refine your criteria over time for better matches.</p></div>
+      </div>
+
+      <div class="cta-dark">
+        <h4>Ready to Streamline Your Proposal Management?</h4>
+        <p>Join businesses, entrepreneurs, and investors who are already using AI to optimize their proposal processes.</p>
+        <button href="/signup" class="trial">Start Your Free Trial</button>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px"><img src="{{ url_for('brand_logo') }}" alt="" width="22" height="22" style="width:22px;height:22px;border-radius:6px;object-fit:cover;display:block;"><div>PitchAura</div></div>
+      <div style="color:var(--muted)">&copy; 2025 PitchAura. All rights reserved.</div>
+    </div>
+  </footer>
+  <script src="static/js/script.js"></script>
+</body>
+</html>
