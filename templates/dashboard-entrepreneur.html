@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('brand_asset') }}?v=2">
+    <title>Entrepreneurs Dashboard | PitchAura</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard-entrepreneur.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/polish.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('brand_logo') }}" alt="" width="24" height="24" style="width:24px;height:24px;border-radius:6px;object-fit:cover;display:block;">
+            <span>PitchAura</span>
+        </div> 
+        <button class="login-btn">Log Out</button>
+    </header>
+
+   <div class="dashboard-header">
+    <div>
+        <!-- <h1>{{ user.firm_name or user.venture_name or "Entrepreneur Dashboard" }}</h1> -->
+        <p style="color: #6b7280; font-size: 14px;">Welcome, {{ fullname }}</p>
+    </div>
+    <div class="user-menu">
+        <div class="user-avatar">{{ fullname[:2]|upper }}</div>
+    </div>
+</div>
+
+
+    <nav class="dashboard-nav">
+        <a href="#" class="nav-item active">Dashboard</a>
+        <a href="#" class="nav-item">My Pitches</a>
+        <a href="#" class="nav-item">Submit Pitch</a>
+        <a href="#" class="nav-item">Investor Matches</a>
+        <a href="#" class="nav-item">Analytics</a>
+    </nav>
+
+    <div class="dashboard-content">
+        <div class="content-section">
+            <div class="entrepreneur-overview">
+                <div>
+                    <p class="eyebrow">Founder Workspace</p>
+                    <h1>Track your fundraising story from draft to investor-ready.</h1>
+                    <p>Keep an eye on pitch readiness, investor traction, and the next step that will make your profile stronger.</p>
+                </div>
+                <button class="btn btn-primary" id="new-pitch-btn">Create New Pitch</button>
+            </div>
+
+            <div class="founder-stats" id="founder-stats">
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.total_pitches if analytics else 0 }}</div>
+                    <div class="stat-label">Pitches submitted</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.avg_match_rate if analytics else 0 }}%</div>
+                    <div class="stat-label">Average match rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.investor_views if analytics else 0 }}</div>
+                    <div class="stat-label">Investor views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.active_conversations if analytics else 0 }}</div>
+                    <div class="stat-label">Active conversations</div>
+                </div>
+            </div>
+
+            <div class="dashboard-grid">
+                <div class="dashboard-panel">
+                    <div class="section-header">
+                        <h2>Next Best Actions</h2>
+                    </div>
+                    <div class="action-list">
+                        <div class="action-item">
+                            <strong>Strengthen your pitch narrative</strong>
+                            <span>Make sure problem, solution, market, and advantage are clear before investors review it.</span>
+                        </div>
+                        <div class="action-item">
+                            <strong>Keep financial signals current</strong>
+                            <span>Revenue, CAC/LTV, growth, and runway help investors judge seriousness quickly.</span>
+                        </div>
+                        <div class="action-item">
+                            <strong>Review investor fit</strong>
+                            <span>Use the matches section to understand which investor profiles your pitch is attracting.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-panel">
+                    <div class="section-header">
+                        <h2>Recent Pitch Activity</h2>
+                    </div>
+                    <div id="recent-pitch-activity" class="activity-list">
+                        <div class="empty-state"><p>Activity appears after you submit or update pitches.</p></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>My Pitches</h2>
+                <button class="btn btn-primary my-pitches-new-btn">+ New Pitch</button>
+            </div>
+            
+            <div class="pitch-cards" id="my-pitches-container">
+                {% if pitches %}
+                    {% for pitch in pitches %}
+                    <div class="pitch-card">
+                        <div class="pitch-header">
+                            <div>
+                                <h3 class="pitch-title">{{ pitch.title }}</h3>
+                                <p class="pitch-category">{{ pitch.industry }} • {{ pitch.stage }}</p>
+                            </div>
+                            <div class="pitch-status {{ get_status_class(pitch.status) }}">
+                                {{ get_status_icon(pitch.status)|safe }}
+                                {{ get_status_text(pitch.status) }}
+                            </div>
+                        </div>
+                        <p class="pitch-summary">{{ pitch.elevator_pitch }}</p>
+                        <div class="pitch-actions">
+                            <button class="btn btn-primary" onclick="viewPitchDetails('{{ pitch._id }}')">View Details</button>
+                            <button class="btn btn-outline" onclick="editPitch('{{ pitch._id }}')">Edit</button>
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="empty-state">
+                        <p>No pitches yet. Create your first pitch to get started!</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Submit New Pitch</h2>
+            </div>
+            
+            <div class="tab-container">
+                <div class="tabs">
+                    <button class="tab active" data-tab="basic">Basic Info</button>
+                    <button class="tab" data-tab="details">Business Details</button>
+                    <button class="tab" data-tab="financials">Financials</button>
+                    <button class="tab" data-tab="review">Review & Submit</button>
+                </div>
+                
+                <div class="tab-content active" id="basic-tab">
+                    <div class="pitch-form">
+                        <div class="form-group">
+                            <label class="form-label">Pitch Title</label>
+                            <input type="text" class="form-input" placeholder="e.g., AI-Powered Customer Support Platform">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Elevator Pitch</label>
+                            <textarea class="form-textarea" placeholder="Describe your business in 1-2 sentences..."></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Industry</label>
+                                <select class="form-select">
+                                    <option>Select Industry</option>
+                                    <option>Technology</option>
+                                    <option>Healthcare</option>
+                                    <option>Consumer Goods</option>
+                                    <option>Financial Services</option>
+                                    <option>Education</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Funding Stage</label>
+                                <select class="form-select">
+                                    <option>Select Stage</option>
+                                    <option>Pre-Seed</option>
+                                    <option>Seed</option>
+                                    <option>Series A</option>
+                                    <option>Series B</option>
+                                    <option>Series C+</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Funding Amount</label>
+                            <input type="text" class="form-input" placeholder="e.g., $500,000">
+                        </div>
+                        
+                        <button class="btn btn-outline next-tab" data-next="details">Next: Business Details</button>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="details-tab">
+                    <div class="pitch-form">
+                        <div class="form-group">
+                            <label class="form-label">Problem Statement</label>
+                            <textarea class="form-textarea" placeholder="What problem does your business solve?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Solution</label>
+                            <textarea class="form-textarea" placeholder="How does your product/service solve this problem?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Target Market</label>
+                            <textarea class="form-textarea" placeholder="Who are your target customers?"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Competitive Advantage</label>
+                            <textarea class="form-textarea" placeholder="What makes your solution unique?"></textarea>
+                        </div>
+                        
+                        <div class="form-row">
+                            <button class="btn btn-outline prev-tab" data-prev="basic">Back</button>
+                            <button class="btn btn-outline next-tab" data-next="financials">Next: Financials</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="financials-tab">
+                    <div class="pitch-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Funding Goal ($)</label>
+                                <input type="number" class="form-input" id="funding-goal" placeholder="e.g., 500000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Current Monthly Revenue ($)</label>
+                                <input type="number" class="form-input" id="monthly-revenue" placeholder="e.g., 15000">
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label">Customer Acquisition Cost ($)</label>
+                                <input type="number" class="form-input" id="cac" placeholder="e.g., 45">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Lifetime Value per Customer ($)</label>
+                                <input type="number" class="form-input" id="ltv" placeholder="e.g., 300">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Monthly Growth Rate (%)</label>
+                            <input type="number" class="form-input" id="growth-rate" placeholder="e.g., 25" step="0.1">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Burn Rate ($/month)</label>
+                            <input type="number" class="form-input" id="burn-rate" placeholder="e.g., 20000">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Runway (months)</label>
+                            <input type="number" class="form-input" id="runway" placeholder="e.g., 18">
+                        </div>
+                        
+                        <div class="form-row">
+                            <button class="btn btn-outline prev-tab" data-prev="details">Back</button>
+                            <button class="btn btn-outline next-tab" data-next="review">Next: Review & Submit</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="review-tab">
+                    <div class="pitch-review">
+                        <h3>Review Your Pitch</h3>
+                        
+                        <div class="review-section">
+                            <h4>Basic Information</h4>
+                            <div class="review-item">
+                                <strong>Pitch Title:</strong>
+                                <span id="review-title">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Elevator Pitch:</strong>
+                                <span id="review-elevator">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Industry:</strong>
+                                <span id="review-industry">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Funding Stage:</strong>
+                                <span id="review-stage">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Funding Amount:</strong>
+                                <span id="review-funding-amount">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-section">
+                            <h4>Business Details</h4>
+                            <div class="review-item">
+                                <strong>Problem Statement:</strong>
+                                <span id="review-problem">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Solution:</strong>
+                                <span id="review-solution">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Target Market:</strong>
+                                <span id="review-market">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Competitive Advantage:</strong>
+                                <span id="review-advantage">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-section">
+                            <h4>Financial Information</h4>
+                            <div class="review-item">
+                                <strong>Funding Goal:</strong>
+                                <span id="review-funding-goal">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Monthly Revenue:</strong>
+                                <span id="review-revenue">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>CAC/LTV Ratio:</strong>
+                                <span id="review-cac-ltv">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Monthly Growth:</strong>
+                                <span id="review-growth">-</span>
+                            </div>
+                            <div class="review-item">
+                                <strong>Runway:</strong>
+                                <span id="review-runway">-</span>
+                            </div>
+                        </div>
+                        
+                        <div class="review-actions">
+                            <button class="btn btn-outline prev-tab" data-prev="financials">Back</button>
+                            <button class="btn btn-primary" id="submit-pitch">Submit Pitch</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Investor Matches</h2>
+            </div>
+            
+            <div class="investor-matches">
+    {% if investors %}
+        {% for investor in investors %}
+        <div class="investor-card">
+            <div class="investor-avatar">{{ investor.name[:2]|upper }}</div>
+            <h3 class="investor-name">{{ investor.name }}</h3>
+            <p class="investor-focus">{{ investor.focus_areas|join(', ') }}</p>
+            <div class="investor-match">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M20 6L9 17L4 12" stroke="#059669" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                {{ investor.match_percentage }}% Match
+            </div>
+            <p style="font-size: 13px; margin: 12px 0 0;">{{ investor.description }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <p>No investor matches yet. Submit a pitch to get matched with investors!</p>
+        </div>
+    {% endif %}
+</div>
+
+        </div>
+
+        <div class="content-section">
+            <div class="section-header">
+                <h2>Pitch Analytics</h2>
+            </div>
+            
+            <div class="stats-grid" id="entrepreneur-analytics-container">
+                {% if analytics %}
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.total_pitches }}</div>
+                    <div class="stat-label">Total Pitches</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.avg_match_rate }}%</div>
+                    <div class="stat-label">Avg. Match Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.investor_views }}</div>
+                    <div class="stat-label">Investor Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">{{ analytics.active_conversations }}</div>
+                    <div class="stat-label">Active Conversations</div>
+                </div>
+                {% else %}
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Total Pitches</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0%</div>
+                    <div class="stat-label">Avg. Match Rate</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Investor Views</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">0</div>
+                    <div class="stat-label">Active Conversations</div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap;">
+            <div>
+                <div class="logo" style="font-size: 18px; margin-bottom: 12px;">
+                    <img src="{{ url_for('brand_logo') }}" alt="" width="20" height="20" style="width:20px;height:20px;border-radius:5px;object-fit:cover;display:block;">
+                    <span>PitchAura</span>
+                </div>
+                <p style="max-width: 300px; font-size: 14px; margin: 0;">AI-powered pitch matching for entrepreneurs and investors.</p>
+            </div>
+            <div style="display: flex; gap: 40px; margin-top: 12px;">
+                <div>
+                    <h4 style="margin: 0 0 12px; font-size: 14px;">For Entrepreneurs</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px;">
+                        <li style="margin-bottom: 6px;"><a href="#">Submit Pitch</a></li>
+                        <li style="margin-bottom: 6px;"><a href="#">Pitch Templates</a></li>
+                        <li style="margin-bottom: 6px;"><a href="#">Investor Network</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 12px; font-size: 14px;">Resources</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px;">
+                        <li style="margin-bottom: 6px;"><a href="#">Blog</a></li>
+                        <li style="margin-bottom: 6px;"><a href="#">Funding Guide</a></li>
+                        <li style="margin-bottom: 6px;"><a href="#">Success Stories</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 style="margin: 0 0 12px; font-size: 14px;">Support</h4>
+                    <ul style="list-style: none; padding: 0; margin: 0; font-size: 14px;">
+                        <li style="margin-bottom: 6px;"><a href="#">Help Center</a></li>
+                        <li style="margin-bottom: 6px;"><a href="#">Contact</a></li>
+                        <li style="margin-bottom: 6px;"><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 24px; padding-top: 18px; border-top: 1px solid #eef2f7; text-align: center; font-size: 14px;">
+            &copy; 2023 PitchAura. All rights reserved.
+        </div>
+    </footer>
+    <!-- Pitch Details Modal -->
+<div id="pitchDetailsModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Pitch Details</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body" id="pitchDetailsContent">
+            <!-- Dynamic content will be loaded here -->
+        </div>
+    </div>
+</div>
+
+<!-- Edit Pitch Modal -->
+<div id="editPitchModal" class="modal">
+    <div class="modal-content" style="max-width: 800px;">
+        <div class="modal-header">
+            <h2>Edit Pitch</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div id="editPitchForm">
+                <!-- Edit form will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+    <script src="{{ url_for('static', filename='js/dashboard-entrepreneur.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/polish.js') }}"></script>
+</body>
+</html>
