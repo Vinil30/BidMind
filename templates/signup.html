@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('brand_asset') }}?v=2">
+    <title>Sign Up | PitchAura</title>
+    <link rel="stylesheet" href="static/css/signup.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/polish.css') }}">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="{{ url_for('brand_logo') }}" alt="" width="24" height="24" style="width:24px;height:24px;border-radius:6px;object-fit:cover;display:block;">
+            <span>PitchAura</span>
+        </div>
+        <a href="/login" class="login-btn">Sign In</a>
+    </header>
+
+    <div class="signup-section">
+        <h1>Create Your Account</h1>
+        <p class="subtitle">Join thousands of businesses, entrepreneurs, and investors using our AI-powered platform</p>
+        
+        <!-- Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <div class="progress-step active" id="step1">
+                1
+                <span class="step-label">Role</span>
+            </div>
+            <div class="progress-step" id="step2">
+                2
+                <span class="step-label">Profile</span>
+            </div>
+            <div class="progress-step" id="step3">
+                3
+                <span class="step-label">Details</span>
+            </div>
+            <div class="progress-step" id="step4">
+                4
+                <span class="step-label">Preferences</span>
+            </div>
+            <div class="progress-step" id="step5">
+                5
+                <span class="step-label">Complete</span>
+            </div>
+        </div>
+        
+        <!-- Step 1: Role Selection -->
+        <div class="form-step active" id="step1-form">
+            <h2 class="step-title">Select Your Role</h2>
+            <p style="text-align: center; color: var(--muted); margin-bottom: 25px;">Choose how you'll use PitchAura</p>
+            
+            <div class="role-selector">
+                <div class="role-option" data-role="business">
+                    <div class="icon">🏢</div>
+                    <h3>Business</h3>
+                    <p>Looking for services, partnerships, or investment opportunities</p>
+                </div>
+                <div class="role-option" data-role="entrepreneur">
+                    <div class="icon">🚀</div>
+                    <h3>Entrepreneur</h3>
+                    <p>Pitching ideas, services, or seeking investment</p>
+                </div>
+                <div class="role-option" data-role="investor">
+                    <div class="icon">💰</div>
+                    <h3>Investor</h3>
+                    <p>Looking for investment opportunities</p>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <div></div> <!-- Empty div for spacing -->
+                <button type="button" class="btn btn-next" id="next1">Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 2: Basic Information -->
+        <div class="form-step" id="step2-form">
+            <h2 class="step-title">Create Your Profile</h2>
+            
+            <div class="form-group">
+                <label for="fullname">Full Name</label>
+                <input type="text" id="fullname" name="fullname" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input type="password" id="confirm-password" name="confirm-password" required>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <button type="button" class="btn btn-prev" id="prev2">Previous</button>
+                <button type="button" class="btn btn-next" id="next2">Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 3: Role-Specific Details -->
+        <div class="form-step" id="step3-form">
+            <h2 class="step-title" id="step3-title">Tell Us More About You</h2>
+            
+            <!-- Business Fields -->
+            <div class="role-specific" id="business-fields">
+                <div class="form-group">
+                    <label for="company-name">Company Name</label>
+                    <input type="text" id="company-name" name="company-name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="industry">Industry</label>
+                    <select id="industry" name="industry">
+                        <option value="">Select Industry</option>
+                        <option value="technology">Technology</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="finance">Finance</option>
+                        <option value="retail">Retail</option>
+                        <option value="manufacturing">Manufacturing</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="company-size">Company Size</label>
+                    <select id="company-size" name="company-size">
+                        <option value="">Select Size</option>
+                        <option value="1-10">1-10 employees</option>
+                        <option value="11-50">11-50 employees</option>
+                        <option value="51-200">51-200 employees</option>
+                        <option value="201-500">201-500 employees</option>
+                        <option value="501+">501+ employees</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Entrepreneur Fields -->
+            <div class="role-specific" id="entrepreneur-fields">
+                <div class="form-group">
+                    <label for="venture-name">Venture/Project Name</label>
+                    <input type="text" id="venture-name" name="venture-name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="venture-stage">Current Stage</label>
+                    <select id="venture-stage" name="venture-stage">
+                        <option value="">Select Stage</option>
+                        <option value="idea">Idea/Concept</option>
+                        <option value="prototype">Prototype</option>
+                        <option value="mvp">MVP</option>
+                        <option value="revenue">Generating Revenue</option>
+                        <option value="scaling">Scaling</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="funding-needed">Funding Needed (USD)</label>
+                    <select id="funding-needed" name="funding-needed">
+                        <option value="">Select Range</option>
+                        <option value="0-25k">$0 - $25,000</option>
+                        <option value="25k-100k">$25,001 - $100,000</option>
+                        <option value="100k-500k">$100,001 - $500,000</option>
+                        <option value="500k-1m">$500,001 - $1,000,000</option>
+                        <option value="1m+">$1,000,000+</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Investor Fields -->
+            <div class="role-specific" id="investor-fields">
+                <div class="form-group">
+                    <label for="firm-name">Firm/Individual Name</label>
+                    <input type="text" id="firm-name" name="firm-name">
+                </div>
+                
+                <div class="form-group">
+                    <label for="investment-focus">Investment Focus</label>
+                    <select id="investment-focus" name="investment-focus">
+                        <option value="">Select Focus</option>
+                        <option value="tech">Technology</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="fintech">Fintech</option>
+                        <option value="consumer">Consumer Goods</option>
+                        <option value="sustainability">Sustainability</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="investment-size">Typical Investment Size (USD)</label>
+                    <select id="investment-size" name="investment-size">
+                        <option value="">Select Range</option>
+                        <option value="0-25k">$0 - $25,000</option>
+                        <option value="25k-100k">$25,001 - $100,000</option>
+                        <option value="100k-500k">$100,001 - $500,000</option>
+                        <option value="500k-1m">$500,001 - $1,000,000</option>
+                        <option value="1m+">$1,000,000+</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-navigation">
+                <button type="button" class="btn btn-prev" id="prev3">Previous</button>
+                <button type="button" class="btn btn-next" id="next3">Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 4: Preferences -->
+        <div class="form-step" id="step4-form">
+            <h2 class="step-title" id="step4-title">Set Your Preferences</h2>
+            
+            <!-- Business Preferences -->
+            <div class="role-specific" id="business-preferences">
+                <div class="form-group">
+                    <label>What types of proposals are you interested in?</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="proposal-type" value="staffing"> Staffing
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="proposal-type" value="services"> Services
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="proposal-type" value="partnerships"> Partnerships
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="proposal-type" value="investment"> Investment Opportunities
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget-range">Budget Range (USD)</label>
+                    <select id="budget-range" name="budget-range">
+                        <option value="">Select Range</option>
+                        <option value="0-10k">$0 - $10,000</option>
+                        <option value="10k-50k">$10,001 - $50,000</option>
+                        <option value="50k-100k">$50,001 - $100,000</option>
+                        <option value="100k-250k">$100,001 - $250,000</option>
+                        <option value="250k+">$250,000+</option>
+                    </select>
+                </div>
+            </div>
+            
+            <!-- Entrepreneur Preferences -->
+            <div class="role-specific" id="entrepreneur-preferences">
+                <div class="form-group">
+                    <label>What are you looking for?</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="entrepreneur-needs" value="funding"> Funding
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="entrepreneur-needs" value="mentorship"> Mentorship
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="entrepreneur-needs" value="partnership"> Strategic Partnership
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="entrepreneur-needs" value="resources"> Resources/Infrastructure
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="target-market">Target Market/Industry</label>
+                    <input type="text" id="target-market" name="target-market" placeholder="e.g., Fintech, Healthcare, E-commerce">
+                </div>
+            </div>
+            
+            <!-- Investor Preferences -->
+            <div class="role-specific" id="investor-preferences">
+                <div class="form-group">
+                    <label>What types of opportunities interest you?</label>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="opportunity-type" value="early-stage"> Early Stage
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="opportunity-type" value="growth"> Growth Stage
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="opportunity-type" value="seed"> Seed Funding
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="opportunity-type" value="series-a"> Series A+
+                        </label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="geographic-focus">Geographic Focus</label>
+                    <input type="text" id="geographic-focus" name="geographic-focus" placeholder="e.g., North America, Europe, Global">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Brief Description</label>
+                <textarea id="description" name="description" placeholder="Tell us a bit more about what you're looking for..."></textarea>
+            </div>
+            
+            <div class="form-navigation">
+                <button type="button" class="btn btn-prev" id="prev4">Previous</button>
+                <button type="button" class="btn btn-next" id="next4">Next</button>
+            </div>
+        </div>
+        
+        <!-- Step 5: Completion -->
+        <div class="form-step" id="step5-form">
+            <h2 class="step-title">Complete Your Registration</h2>
+            
+            <div style="text-align: center; margin-bottom: 30px;">
+                <div style="font-size: 48px; margin-bottom: 20px;">🎉</div>
+                <p>You're almost ready to start using PitchAura!</p>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="terms" name="terms" required>
+                    I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                </label>
+            </div>
+            
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" id="newsletter" name="newsletter">
+                    Send me product updates and tips to get the most out of PitchAura
+                </label>
+            </div>
+            
+            <div class="form-navigation">
+                <button type="button" class="btn btn-prev" id="prev5">Previous</button>
+                <button type="submit" class="btn btn-submit" id="submit-btn">Create Account</button>
+            </div>
+        </div>
+        
+        <div class="terms">
+            Already have an account? <a href="/login">Sign in here</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2025 PitchAura. All rights reserved.</p>
+    </footer>
+    <script src="static/js/signup.js"></script>
+    <script src="{{ url_for('static', filename='js/polish.js') }}"></script>
+</body>
+</html>
