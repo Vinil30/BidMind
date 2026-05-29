@@ -1,0 +1,3 @@
+1. The current entrepeuners profile is good, but make it more special, the numbers shown should be real and not preset(if you are using preset, otherwise its good) and there is a section named next best actions
+make it real time ai generated and give that everytime entrepeuner gets matched with an investor or creates a new pitch etc , as everything is already stored in our rag, make it real time ai generated suggestions
+based on the rag context, things like pitches, actions, numbers and current scenario like got matched with so and so investor with this pitch etc etc 

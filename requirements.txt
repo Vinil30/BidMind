@@ -1,0 +1,13 @@
+Flask
+gunicorn
+requests
+python-dotenv
+pymongo
+langgraph
+langchain==0.0.331
+langchain-core
+sentence-transformers
+transformers
+torch
+faiss-cpu
+openai
