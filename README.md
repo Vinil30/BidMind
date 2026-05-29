@@ -10,6 +10,7 @@ BidMind is a Flask-based AI proposal and pitch management platform for three use
 - Investor dashboard with opportunity feed, preference tuning, portfolio view, saved summaries, decision history, analytics, and pitch detail review.
 - Proposal sharing through copyable links plus Facebook, X/Twitter, LinkedIn, and email sharing.
 - Deployment-ready configuration for Render using Gunicorn.
+- The repo currently contains vector DB folder, but in real-time production, we will be using API.
 
 ## AI and Matching Features
 
