@@ -3,9 +3,6 @@ from bson import ObjectId
 import datetime
 import traceback
 
-from utils.investor_feed import create_feed_generation_workflow
-from utils.investor_decision_handling import process_investor_decision
-
 def register_routes(app, deps):
     users = deps.get("users")
     pitches = deps.get("pitches")
@@ -189,6 +186,7 @@ def register_routes(app, deps):
         user_id = str(session["user_id"])
         
         try:
+            from utils.investor_feed import create_feed_generation_workflow
             workflow = create_feed_generation_workflow()
             initial_state = {
                 "feed": {"investor_id": user_id},
@@ -509,6 +507,7 @@ def register_routes(app, deps):
         user_id = str(session["user_id"])
         
         try:
+            from utils.investor_feed import create_feed_generation_workflow
             workflow = create_feed_generation_workflow()
             initial_state = {
                 "feed": {"investor_id": user_id},
@@ -539,6 +538,7 @@ def register_routes(app, deps):
         user_id = str(session["user_id"])
         
         try:
+            from utils.investor_feed import create_feed_generation_workflow
             workflow = create_feed_generation_workflow()
             initial_state = {
                 "feed": {"investor_id": user_id},
@@ -623,6 +623,7 @@ def register_routes(app, deps):
                 }), 400
 
             # Process the decision using LangGraph workflow
+            from utils.investor_decision_handling import process_investor_decision
             result = process_investor_decision(
                 investor_id=investor_id,
                 entrepreneur_id=entrepreneur_id,

@@ -8,12 +8,8 @@ import datetime
 import json
 from bson import ObjectId
 import random
-from utils.vectorstore_utils import add_pitch_to_vectorstore
 import string
 import secrets
-from utils.investor_feed import create_feed_generation_workflow
-from utils.db_connect import investor_ent_matches, investor_feed, investor_maybe, investor_rejections, investor_feed_blocker
-from utils.investor_decision_handling import process_investor_decision
 import traceback
 
 from routes.assets import register_routes as register_asset_routes
@@ -54,6 +50,10 @@ proposal_links = db.proposal_links
 business_analytics = db.business_analytics
 summaries = db["summaries"]
 submissions = db["submissions"]
+investor_ent_matches = db["investor_ent_macthes"]
+investor_maybe = db["investor_maybe"]
+investor_rejections = db["investor_rejections"]
+investor_feed_blocker = db["investor_feed_blocker"]
 
 # ==================== UTILITY FUNCTIONS ====================
 

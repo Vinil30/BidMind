@@ -2,8 +2,6 @@ from flask import render_template, redirect, request, session, url_for, jsonify
 from bson import ObjectId
 import datetime
 
-from utils.vectorstore_utils import add_pitch_to_vectorstore
-
 def register_routes(app, deps):
     users = deps.get("users")
     pitches = deps.get("pitches")
@@ -92,6 +90,7 @@ def register_routes(app, deps):
 
                 # ✅ Add to vectorstore (RAG embedding)
                 try:
+                    from utils.vectorstore_utils import add_pitch_to_vectorstore
                     add_pitch_to_vectorstore(pitch_data)
                 except Exception as e:
                     print(f"⚠️ Vectorstore error: {e}")
@@ -155,6 +154,7 @@ def register_routes(app, deps):
 
                     # ✅ Re-embed in vectorstore
                     try:
+                        from utils.vectorstore_utils import add_pitch_to_vectorstore
                         add_pitch_to_vectorstore(updated_pitch)
                     except Exception as e:
                         print(f"⚠️ Vectorstore update error: {e}")
